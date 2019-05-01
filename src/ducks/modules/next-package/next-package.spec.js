@@ -1,4 +1,9 @@
-import nextPackageReducer, { changePackageObject } from "./next-package";
+import { makeDependency } from "../../../entities";
+
+import nextPackageReducer, {
+  changePackageObject,
+  changeDependencies
+} from "./next-package";
 
 describe("next-package reducer", () => {
   test("init", () => {
@@ -77,6 +82,39 @@ describe("next-package reducer", () => {
 
       // then
       expect(nextState.packageObject).toEqual(packageObject);
+    });
+  });
+
+  describe("next-package/CHANGE_DEPENDENCIES action", () => {
+    const dep1 = makeDependency("dep1");
+    const dep2 = makeDependency("dep2");
+
+    test("기존 디펜던시 목록이 없는 상태에서 디펜던시 목록을 넘겨준 경우", () => {
+      // given
+      const prevState = {
+        dependencies: new Map()
+      };
+
+      // when
+      const action = changeDependencies([dep1]);
+      const nextState = nextPackageReducer(prevState, action);
+
+      // then
+      expect([...nextState.dependencies.entries()]).toEqual([["dep1", dep1]]);
+    });
+
+    test("기존 디펜던시 목록이 있는 상태에서 디펜던시 목록을 넘겨준 경우", () => {
+      // given
+      const prevState = {
+        dependencies: new Map([["dep1", dep1]])
+      };
+
+      // when
+      const action = changeDependencies([dep2]);
+      const nextState = nextPackageReducer(prevState, action);
+
+      // then
+      expect([...nextState.dependencies.entries()]).toEqual([["dep2", dep2]]);
     });
   });
 });
