@@ -5,6 +5,8 @@ import nextPackageReducer, {
   changeDependencies,
   changeDevDependencies,
   changeError,
+  changeDependenciesError,
+  changeDevDependenciesError,
   changeDependenciesLoading,
   changeDevDependenciesLoading
 } from "./next-package";
@@ -160,8 +162,6 @@ describe("next-package reducer", () => {
   });
 
   describe("next-package/CHANGE_ERROR action", () => {
-    const error = new Error("TEST");
-
     test("전역 에러 변경", () => {
       // given
       const prevState = {
@@ -169,69 +169,134 @@ describe("next-package reducer", () => {
       };
 
       // when
-      const action = changeError(null, error);
+      const error = new Error("TEST");
+      const action = changeError(error);
       const nextState = nextPackageReducer(prevState, action);
 
       // then
       expect(nextState.error).toBe(error);
     });
+  });
 
-    test("존재하는 디펜던시의 에러 변경", () => {
+  describe("next-package/CHANGE_DEPENDENCIES_ERROR action", () => {
+    const dep1 = makeDependency("dep1");
+    const error = new Error("TEST");
+
+    test("존재하는 디펜던시의 에러 상태 변경 (null -> error)", () => {
       // given
       const prevState = {
-        dependencies: new Map([["dep1", makeDependency("dep1")]])
+        dependencies: new Map([["dep1", { ...dep1, error: null }]])
       };
 
       // when
-      const action = changeError(["dependencies", "dep1"], error);
+      const action = changeDependenciesError("dep1", error);
       const nextState = nextPackageReducer(prevState, action);
 
       // then
       expect(nextState.dependencies.get("dep1").error).toBe(error);
     });
 
-    test("존재하지 않는 디펜던시의 에러 변경", () => {
+    test("존재하는 디펜던시의 에러 상태 변경 (error -> null)", () => {
       // given
-      const dep1 = makeDependency("dep1");
       const prevState = {
-        dependencies: new Map([["dep1", dep1]])
+        dependencies: new Map([["dep1", { ...dep1, error }]])
       };
 
       // when
-      const action = changeError(["dependencies", "dep2"], error);
+      const action = changeDependenciesError("dep1", null);
       const nextState = nextPackageReducer(prevState, action);
 
       // then
-      expect(nextState.dependencies.get("dep1").error).toBe(dep1.error);
+      expect(nextState.dependencies.get("dep1").error).toBe(null);
     });
 
-    test("존재하는 데브 디펜던시의 에러 변경", () => {
+    test("존재하지 않는 디펜던시의 에러 상태 변경 (null -> error)", () => {
       // given
       const prevState = {
-        devDependencies: new Map([["dep1", makeDependency("dep1")]])
+        dependencies: new Map([["dep1", { ...dep1, error: null }]])
       };
 
       // when
-      const action = changeError(["devDependencies", "dep1"], error);
+      const action = changeDependenciesError("dep2", error);
+      const nextState = nextPackageReducer(prevState, action);
+
+      // then
+      expect(nextState.dependencies.get("dep1").error).toBe(null);
+    });
+
+    test("존재하지 않는 디펜던시의 에러 상태 변경 (error -> null)", () => {
+      // given
+      const prevState = {
+        dependencies: new Map([["dep1", { ...dep1, error }]])
+      };
+
+      // when
+      const action = changeDependenciesError("dep2", null);
+      const nextState = nextPackageReducer(prevState, action);
+
+      // then
+      expect(nextState.dependencies.get("dep1").error).toBe(error);
+    });
+  });
+
+  describe("next-package/CHANGE_DEV_DEPENDENCIES_ERROR action", () => {
+    const dep1 = makeDependency("dep1");
+    const error = new Error("TEST");
+
+    test("존재하는 데브 디펜던시의 에러 상태 변경 (null -> error)", () => {
+      // given
+      const prevState = {
+        devDependencies: new Map([["dep1", { ...dep1, error: null }]])
+      };
+
+      // when
+      const action = changeDevDependenciesError("dep1", error);
       const nextState = nextPackageReducer(prevState, action);
 
       // then
       expect(nextState.devDependencies.get("dep1").error).toBe(error);
     });
 
-    test("존재하지 않는 데브 디펜던시의 에러 변경", () => {
+    test("존재하는 데브 디펜던시의 에러 상태 변경 (error -> null)", () => {
       // given
-      const dep1 = makeDependency("dep1");
       const prevState = {
-        devDependencies: new Map([["dep1", dep1]])
+        devDependencies: new Map([["dep1", { ...dep1, error }]])
       };
 
       // when
-      const action = changeError(["devDependencies", "dep2"], error);
+      const action = changeDevDependenciesError("dep1", null);
       const nextState = nextPackageReducer(prevState, action);
 
       // then
-      expect(nextState.devDependencies.get("dep1").error).toBe(dep1.error);
+      expect(nextState.devDependencies.get("dep1").error).toBe(null);
+    });
+
+    test("존재하지 않는 데브 디펜던시의 에러 상태 변경 (null -> error)", () => {
+      // given
+      const prevState = {
+        devDependencies: new Map([["dep1", { ...dep1, error: null }]])
+      };
+
+      // when
+      const action = changeDevDependenciesError("dep2", error);
+      const nextState = nextPackageReducer(prevState, action);
+
+      // then
+      expect(nextState.devDependencies.get("dep1").error).toBe(null);
+    });
+
+    test("존재하지 않는 데브 디펜던시의 에러 상태 변경 (error -> null)", () => {
+      // given
+      const prevState = {
+        devDependencies: new Map([["dep1", { ...dep1, error }]])
+      };
+
+      // when
+      const action = changeDevDependenciesError("dep2", null);
+      const nextState = nextPackageReducer(prevState, action);
+
+      // then
+      expect(nextState.devDependencies.get("dep1").error).toBe(error);
     });
   });
 
@@ -355,3 +420,63 @@ describe("next-package reducer", () => {
     });
   });
 });
+
+/*
+    test("존재하는 디펜던시의 에러 변경", () => {
+      // given
+      const prevState = {
+        dependencies: new Map([["dep1", makeDependency("dep1")]])
+      };
+
+      // when
+      const action = changeError(["dependencies", "dep1"], error);
+      const nextState = nextPackageReducer(prevState, action);
+
+      // then
+      expect(nextState.dependencies.get("dep1").error).toBe(error);
+    });
+
+    test("존재하지 않는 디펜던시의 에러 변경", () => {
+      // given
+      const dep1 = makeDependency("dep1");
+      const prevState = {
+        dependencies: new Map([["dep1", dep1]])
+      };
+
+      // when
+      const action = changeError(["dependencies", "dep2"], error);
+      const nextState = nextPackageReducer(prevState, action);
+
+      // then
+      expect(nextState.dependencies.get("dep1").error).toBe(dep1.error);
+    });
+
+    test("존재하는 데브 디펜던시의 에러 변경", () => {
+      // given
+      const prevState = {
+        devDependencies: new Map([["dep1", makeDependency("dep1")]])
+      };
+
+      // when
+      const action = changeError(["devDependencies", "dep1"], error);
+      const nextState = nextPackageReducer(prevState, action);
+
+      // then
+      expect(nextState.devDependencies.get("dep1").error).toBe(error);
+    });
+
+    test("존재하지 않는 데브 디펜던시의 에러 변경", () => {
+      // given
+      const dep1 = makeDependency("dep1");
+      const prevState = {
+        devDependencies: new Map([["dep1", dep1]])
+      };
+
+      // when
+      const action = changeError(["devDependencies", "dep2"], error);
+      const nextState = nextPackageReducer(prevState, action);
+
+      // then
+      expect(nextState.devDependencies.get("dep1").error).toBe(dep1.error);
+    });
+    */
