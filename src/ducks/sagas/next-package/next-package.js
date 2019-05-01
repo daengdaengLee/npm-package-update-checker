@@ -20,7 +20,7 @@ import {
 
 // workers
 
-function* processRequestCheckUpdates({ packageString }) {
+export function* processRequestCheckUpdates({ packageString }) {
   yield put(changePackageObject({}));
   yield put(changeError(null));
   yield put(changeDependencies(new Map()));
