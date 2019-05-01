@@ -5,7 +5,8 @@ import nextPackageReducer, {
   changeDependencies,
   changeDevDependencies,
   changeError,
-  changeDependenciesLoading
+  changeDependenciesLoading,
+  changeDevDependenciesLoading
 } from "./next-package";
 
 describe("next-package reducer", () => {
@@ -291,6 +292,66 @@ describe("next-package reducer", () => {
 
       // then
       expect(nextState.dependencies.get("dep1").loading).toBe(true);
+    });
+  });
+
+  describe("next-package/CHANGE_DEV_DEPENDENCIES_LOADING action", () => {
+    const dep1 = makeDependency("dep1");
+
+    test("존재하는 데브 디펜던시의 로딩 상태 변경 (false -> true)", () => {
+      // given
+      const prevState = {
+        devDependencies: new Map([["dep1", { ...dep1, loading: false }]])
+      };
+
+      // when
+      const action = changeDevDependenciesLoading("dep1", true);
+      const nextState = nextPackageReducer(prevState, action);
+
+      // then
+      expect(nextState.devDependencies.get("dep1").loading).toBe(true);
+    });
+
+    test("존재하는 데브 디펜던시의 로딩 상태 변경 (true -> false)", () => {
+      // given
+      const prevState = {
+        devDependencies: new Map([["dep1", { ...dep1, loading: true }]])
+      };
+
+      // when
+      const action = changeDevDependenciesLoading("dep1", false);
+      const nextState = nextPackageReducer(prevState, action);
+
+      // then
+      expect(nextState.devDependencies.get("dep1").loading).toBe(false);
+    });
+
+    test("존재하지 않는 데브 디펜던시의 로딩 상태 변경 (false -> true)", () => {
+      // given
+      const prevState = {
+        devDependencies: new Map([["dep1", { ...dep1, loading: false }]])
+      };
+
+      // when
+      const action = changeDevDependenciesLoading("dep2", true);
+      const nextState = nextPackageReducer(prevState, action);
+
+      // then
+      expect(nextState.devDependencies.get("dep1").loading).toBe(false);
+    });
+
+    test("존재하지 않는 데브 디펜던시의 로딩 상태 변경 (true -> false)", () => {
+      // given
+      const prevState = {
+        devDependencies: new Map([["dep1", { ...dep1, loading: true }]])
+      };
+
+      // when
+      const action = changeDevDependenciesLoading("dep2", false);
+      const nextState = nextPackageReducer(prevState, action);
+
+      // then
+      expect(nextState.devDependencies.get("dep1").loading).toBe(true);
     });
   });
 });
