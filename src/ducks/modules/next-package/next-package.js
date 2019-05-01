@@ -4,6 +4,7 @@ import * as F from "fxjs2";
 
 export const CHANGE_PACKAGE_OBJECT = "next-package/CHANGE_PACKAGE_OBJECT";
 export const CHANGE_DEPENDENCIES = "next-package/CHANGE_DEPENDENCIES";
+export const CHANGE_DEV_DEPENDENCIES = "next-package/CHANGE_DEV_DEPENDENCIES";
 
 // Action Creators
 
@@ -14,6 +15,10 @@ export const changePackageObject = packageObject => ({
 export const changeDependencies = dependencies => ({
   type: CHANGE_DEPENDENCIES,
   dependencies
+});
+export const changeDevDependencies = devDependencies => ({
+  type: CHANGE_DEV_DEPENDENCIES,
+  devDependencies
 });
 
 // Init State
@@ -33,6 +38,8 @@ export default function nextPackageReducer(state = initState, action = {}) {
       return applyChangePackageObject(state, action);
     case CHANGE_DEPENDENCIES:
       return applyChangeDependencies(state, action);
+    case CHANGE_DEV_DEPENDENCIES:
+      return applyChangeDevDependencies(state, action);
     default:
       return state;
   }
@@ -57,6 +64,20 @@ function applyChangeDependencies(state, { dependencies }) {
       },
       new Map(),
       dependencies
+    )
+  };
+}
+
+function applyChangeDevDependencies(state, { devDependencies }) {
+  return {
+    ...state,
+    devDependencies: F.reduce(
+      (devDependencies, devDependency) => {
+        devDependencies.set(devDependency.name, devDependency);
+        return devDependencies;
+      },
+      new Map(),
+      devDependencies
     )
   };
 }
