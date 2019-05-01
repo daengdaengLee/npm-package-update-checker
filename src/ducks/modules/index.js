@@ -1,7 +1,7 @@
 import { combineReducers } from "redux";
 
-const dummyReducer = (state = { dummy: "hello world" }, action = {}) => state;
+import prevPackage from "./prev-package/prev-package";
 
-const rootReducer = combineReducers({ dummy: dummyReducer });
+const rootReducer = combineReducers({ prevPackage });
 
 export default rootReducer;
