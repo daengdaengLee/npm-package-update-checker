@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "fxjs2": "^0.2.7",
+    "graphql-yoga": "^1.17.4",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
