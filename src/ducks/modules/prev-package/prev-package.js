@@ -4,15 +4,15 @@ export const CHANGE_PACKAGE_STRING = "prev-package/CHANGE_PACKAGE_STRING";
 
 // Action Creators
 
-export const changePackageString = string => ({
+export const changePackageString = packageString => ({
   type: CHANGE_PACKAGE_STRING,
-  string
+  packageString
 });
 
 // Init State
 
 const initState = {
-  string: "",
+  packageString: ""
 };
 
 // Reducer
@@ -28,9 +28,9 @@ export default function prevPackageReducer(state = initState, action = {}) {
 
 // Reducer Functions
 
-function applyChangePackageString(state, { string }) {
+function applyChangePackageString(state, { packageString }) {
   return {
     ...state,
-    string
+    packageString
   };
 }

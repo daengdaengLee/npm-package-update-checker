@@ -21,20 +21,20 @@ describe("prev-package reducer", () => {
       // given
       // 특정 상태에서
       const prevState = {
-        string: ""
+        packageString: ""
       };
 
       // when
       // package.json 문자열을 입력하면
-      const packageJsonObject = {
+      const packageObject = {
         name: "npm-package-update-checker",
         version: "0.1.0"
       };
-      const packageJsonString = JSON.stringify(packageJsonObject);
-      const action = changePackageString(packageJsonString);
+      const packageString = JSON.stringify(packageObject);
+      const action = changePackageString(packageString);
       const nextState = prevPackageReducer(prevState, action);
 
-      expect(nextState.string).toBe(packageJsonString);
+      expect(nextState.packageString).toBe(packageString);
     });
   });
 });
