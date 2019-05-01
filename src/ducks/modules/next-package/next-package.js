@@ -8,6 +8,8 @@ export const CHANGE_DEV_DEPENDENCIES = "next-package/CHANGE_DEV_DEPENDENCIES";
 export const CHANGE_ERROR = "next-package/CHANGE_ERROR";
 export const CHANGE_DEPENDENCIES_LOADING =
   "next-package/CHANGE_DEPENDENCIES_LOADING";
+export const CHANGE_DEV_DEPENDENCIES_LOADING =
+  "next-package/CHANGE_DEV_DEPENDENCIES_LOADING";
 
 // Action Creators
 
@@ -30,6 +32,11 @@ export const changeError = (target, error) => ({
 });
 export const changeDependenciesLoading = (name, loading) => ({
   type: CHANGE_DEPENDENCIES_LOADING,
+  name,
+  loading
+});
+export const changeDevDependenciesLoading = (name, loading) => ({
+  type: CHANGE_DEV_DEPENDENCIES_LOADING,
   name,
   loading
 });
@@ -57,6 +64,8 @@ export default function nextPackageReducer(state = initState, action = {}) {
       return applyChangeError(state, action);
     case CHANGE_DEPENDENCIES_LOADING:
       return applyChangeDependenciesLoading(state, action);
+    case CHANGE_DEV_DEPENDENCIES_LOADING:
+      return applyChangeDevDependenciesLoading(state, action);
     default:
       return state;
   }
@@ -128,5 +137,21 @@ function applyChangeDependenciesLoading(state, { name, loading }) {
   return {
     ...state,
     dependencies
+  };
+}
+
+function applyChangeDevDependenciesLoading(state, { name, loading }) {
+  const prevDevDependency = state.devDependencies.get(name);
+  if (!prevDevDependency) return state;
+
+  const nextDevDependency = { ...prevDevDependency, loading };
+  const devDependencies = new Map(state.devDependencies).set(
+    nextDevDependency.name,
+    nextDevDependency
+  );
+
+  return {
+    ...state,
+    devDependencies
   };
 }
