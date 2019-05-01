@@ -13,7 +13,6 @@ export const changePackageString = string => ({
 
 const initState = {
   string: "",
-  object: null
 };
 
 // Reducer
