@@ -4,7 +4,8 @@ import nextPackageReducer, {
   changePackageObject,
   changeDependencies,
   changeDevDependencies,
-  changeError
+  changeError,
+  changeDependenciesLoading
 } from "./next-package";
 
 describe("next-package reducer", () => {
@@ -157,7 +158,7 @@ describe("next-package reducer", () => {
     });
   });
 
-  describe("next-package/CHANGE_ERROR", () => {
+  describe("next-package/CHANGE_ERROR action", () => {
     const error = new Error("TEST");
 
     test("전역 에러 변경", () => {
@@ -230,6 +231,66 @@ describe("next-package reducer", () => {
 
       // then
       expect(nextState.devDependencies.get("dep1").error).toBe(dep1.error);
+    });
+  });
+
+  describe("next-package/CHANGE_DEPENDENCIES_LOADING action", () => {
+    const dep1 = makeDependency("dep1");
+
+    test("존재하는 디펜던시의 로딩 상태 변경 (false -> true)", () => {
+      // given
+      const prevState = {
+        dependencies: new Map([["dep1", { ...dep1, loading: false }]])
+      };
+
+      // when
+      const action = changeDependenciesLoading("dep1", true);
+      const nextState = nextPackageReducer(prevState, action);
+
+      // then
+      expect(nextState.dependencies.get("dep1").loading).toBe(true);
+    });
+
+    test("존재하는 디펜던시의 로딩 상태 변경 (true -> false)", () => {
+      // given
+      const prevState = {
+        dependencies: new Map([["dep1", { ...dep1, loading: true }]])
+      };
+
+      // when
+      const action = changeDependenciesLoading("dep1", false);
+      const nextState = nextPackageReducer(prevState, action);
+
+      // then
+      expect(nextState.dependencies.get("dep1").loading).toBe(false);
+    });
+
+    test("존재하지 않는 디펜던시의 로딩 상태 변경 (false -> true)", () => {
+      // given
+      const prevState = {
+        dependencies: new Map([["dep1", { ...dep1, loading: false }]])
+      };
+
+      // when
+      const action = changeDependenciesLoading("dep2", true);
+      const nextState = nextPackageReducer(prevState, action);
+
+      // then
+      expect(nextState.dependencies.get("dep1").loading).toBe(false);
+    });
+
+    test("존재하지 않는 디펜던시의 로딩 상태 변경 (true -> false)", () => {
+      // given
+      const prevState = {
+        dependencies: new Map([["dep1", { ...dep1, loading: true }]])
+      };
+
+      // when
+      const action = changeDependenciesLoading("dep2", false);
+      const nextState = nextPackageReducer(prevState, action);
+
+      // then
+      expect(nextState.dependencies.get("dep1").loading).toBe(true);
     });
   });
 });
