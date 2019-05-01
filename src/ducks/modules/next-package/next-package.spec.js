@@ -9,7 +9,8 @@ import nextPackageReducer, {
   changeDevDependenciesError,
   changeDependenciesLoading,
   changeDevDependenciesLoading,
-  changeDependenciesNextVersion
+  changeDependenciesNextVersion,
+  changeDevDependenciesNextVersion
 } from "./next-package";
 
 describe("next-package reducer", () => {
@@ -450,6 +451,38 @@ describe("next-package reducer", () => {
 
       // then
       expect(nextState.dependencies.get("dep1").nextVersion).toBe("2");
+    });
+  });
+
+  describe("next-package/CHANGE_DEV_DEPENDENCIES_NEXT_VERSION action", () => {
+    const dep1 = makeDependency("dep1", "1", "2");
+
+    test("존재하는 데브 디펜던시의 nextVerion을 변경", () => {
+      // given
+      const prevState = {
+        devDependencies: new Map([["dep1", dep1]])
+      };
+
+      // when
+      const action = changeDevDependenciesNextVersion("dep1", "3");
+      const nextState = nextPackageReducer(prevState, action);
+
+      // then
+      expect(nextState.devDependencies.get("dep1").nextVersion).toBe("3");
+    });
+
+    test("존재하지 않는 데브 디펜던시의 nextVerion을 변경", () => {
+      // given
+      const prevState = {
+        devDependencies: new Map([["dep1", dep1]])
+      };
+
+      // when
+      const action = changeDevDependenciesNextVersion("dep2", "3");
+      const nextState = nextPackageReducer(prevState, action);
+
+      // then
+      expect(nextState.devDependencies.get("dep1").nextVersion).toBe("2");
     });
   });
 });
