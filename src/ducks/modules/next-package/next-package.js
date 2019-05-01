@@ -5,6 +5,7 @@ import * as F from "fxjs2";
 export const CHANGE_PACKAGE_OBJECT = "next-package/CHANGE_PACKAGE_OBJECT";
 export const CHANGE_DEPENDENCIES = "next-package/CHANGE_DEPENDENCIES";
 export const CHANGE_DEV_DEPENDENCIES = "next-package/CHANGE_DEV_DEPENDENCIES";
+export const CHANGE_ERROR = "next-package/CHANGE_ERROR";
 
 // Action Creators
 
@@ -19,6 +20,11 @@ export const changeDependencies = dependencies => ({
 export const changeDevDependencies = devDependencies => ({
   type: CHANGE_DEV_DEPENDENCIES,
   devDependencies
+});
+export const changeError = (target, error) => ({
+  type: CHANGE_ERROR,
+  target,
+  error
 });
 
 // Init State
@@ -40,6 +46,8 @@ export default function nextPackageReducer(state = initState, action = {}) {
       return applyChangeDependencies(state, action);
     case CHANGE_DEV_DEPENDENCIES:
       return applyChangeDevDependencies(state, action);
+    case CHANGE_ERROR:
+      return applyChangeError(state, action);
     default:
       return state;
   }
@@ -79,5 +87,21 @@ function applyChangeDevDependencies(state, { devDependencies }) {
       new Map(),
       devDependencies
     )
+  };
+}
+
+function applyChangeError(state, { target, error }) {
+  if (!target) return { ...state, error };
+
+  const prevMap = state[target[0]];
+  const prevDependency = prevMap.get(target[1]);
+  if (!prevDependency) return state;
+
+  const nextDependency = { ...prevDependency, error };
+  const nextMap = new Map(prevMap).set(nextDependency.name, nextDependency);
+
+  return {
+    ...state,
+    [target[0]]: nextMap
   };
 }
