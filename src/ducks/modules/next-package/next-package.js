@@ -14,6 +14,8 @@ export const CHANGE_DEPENDENCIES_LOADING =
   "next-package/CHANGE_DEPENDENCIES_LOADING";
 export const CHANGE_DEV_DEPENDENCIES_LOADING =
   "next-package/CHANGE_DEV_DEPENDENCIES_LOADING";
+export const CHANGE_DEPENDENCIES_NEXT_VERSION =
+  "next-package/CHANGE_DEPENDENCIES_NEXT_VERSION";
 
 // Action Creators
 
@@ -53,6 +55,11 @@ export const changeDevDependenciesLoading = (name, loading) => ({
   name,
   loading
 });
+export const changeDependenciesNextVersion = (name, nextVersion) => ({
+  type: CHANGE_DEPENDENCIES_NEXT_VERSION,
+  name,
+  nextVersion
+});
 
 // Init State
 
@@ -83,6 +90,8 @@ export default function nextPackageReducer(state = initState, action = {}) {
       return applyChangeDependenciesLoading(state, action);
     case CHANGE_DEV_DEPENDENCIES_LOADING:
       return applyChangeDevDependenciesLoading(state, action);
+    case CHANGE_DEPENDENCIES_NEXT_VERSION:
+      return applyChangeDependenciesNextVersion(state, action);
     default:
       return state;
   }
@@ -193,5 +202,21 @@ function applyChangeDevDependenciesLoading(state, { name, loading }) {
   return {
     ...state,
     devDependencies
+  };
+}
+
+function applyChangeDependenciesNextVersion(state, { name, nextVersion }) {
+  const prevDependency = state.dependencies.get(name);
+  if (!prevDependency) return state;
+
+  const nextDependency = { ...prevDependency, nextVersion };
+  const dependencies = new Map(state.dependencies).set(
+    nextDependency.name,
+    nextDependency
+  );
+
+  return {
+    ...state,
+    dependencies
   };
 }
