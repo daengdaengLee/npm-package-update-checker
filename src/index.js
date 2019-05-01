@@ -1,15 +1,19 @@
 import React, { Fragment } from "react";
 import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
 
+import store from "./ducks";
 import App from "./app";
 import GlobalStyle from "./global-style";
 import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(
-  <Fragment>
-    <GlobalStyle />
-    <App />
-  </Fragment>,
+  <Provider store={store}>
+    <Fragment>
+      <GlobalStyle />
+      <App />
+    </Fragment>
+  </Provider>,
   document.getElementById("root")
 );
 
