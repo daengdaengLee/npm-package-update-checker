@@ -2,6 +2,8 @@ import * as F from "fxjs2";
 
 // Actions
 
+export const REQUEST_CHECK_UPDATES = "next-package/REQUEST_CHECK_UPDATES";
+
 export const CHANGE_PACKAGE_OBJECT = "next-package/CHANGE_PACKAGE_OBJECT";
 export const CHANGE_DEPENDENCIES = "next-package/CHANGE_DEPENDENCIES";
 export const CHANGE_DEV_DEPENDENCIES = "next-package/CHANGE_DEV_DEPENDENCIES";
@@ -20,6 +22,11 @@ export const CHANGE_DEV_DEPENDENCIES_NEXT_VERSION =
   "next-package/CHANGE_DEV_DEPENDENCIES_NEXT_VERSION";
 
 // Action Creators
+
+export const requestCheckUpdates = packageString => ({
+  type: REQUEST_CHECK_UPDATES,
+  packageString
+});
 
 export const changePackageObject = packageObject => ({
   type: CHANGE_PACKAGE_OBJECT,
