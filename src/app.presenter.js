@@ -1,8 +1,10 @@
-import React, { useState, useMemo } from "react";
+import React, { useMemo } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import * as F from "fxjs2";
 import { L } from "fxjs2";
+
+import PrevPackage from "./components/organisms/prev-package/prev-package";
 
 const Container = styled.div`
   width: 100%;
@@ -17,13 +19,7 @@ const TextArea = styled.textarea`
   box-sizing: border-box;
 `;
 
-const App = ({
-  nextPackageObject,
-  nextDependencies,
-  nextDevDependencies,
-  onClickCheck
-}) => {
-  const [prevPackageJsonString, setPrevPackageJsonString] = useState("");
+const App = ({ nextPackageObject, nextDependencies, nextDevDependencies }) => {
   const nextPackageJsonString = useMemo(() => {
     if (!nextPackageObject || typeof nextPackageObject !== "object") return "";
 
@@ -71,19 +67,7 @@ const App = ({
 
   return (
     <Container>
-      <div>prev package.json</div>
-      <TextArea
-        value={prevPackageJsonString}
-        onChange={({ target: { value } }) => setPrevPackageJsonString(value)}
-      />
-      <div>
-        <button
-          type="button"
-          onClick={() => onClickCheck(prevPackageJsonString)}
-        >
-          check
-        </button>
-      </div>
+      <PrevPackage />
       <div>next package.json</div>
       <TextArea value={nextPackageJsonString} readOnly />
     </Container>
@@ -93,15 +77,13 @@ const App = ({
 App.defaultProps = {
   nextPackageObject: {},
   nextDependencies: new Map(),
-  nextDevDependencies: new Map(),
-  onClickCheck: prevPackageJsonString => {}
+  nextDevDependencies: new Map()
 };
 
 App.propTypes = {
   nextPackageObject: PropTypes.object,
   nextDependencies: PropTypes.instanceOf(Map),
-  nextDevDependencies: PropTypes.instanceOf(Map),
-  onClickCheck: PropTypes.func
+  nextDevDependencies: PropTypes.instanceOf(Map)
 };
 
 export default App;

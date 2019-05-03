@@ -2,8 +2,6 @@ import { connect } from "react-redux";
 
 import { withErrorBoundary } from "./hocs";
 
-import { requestCheckUpdates } from "./ducks/modules/next-package/next-package";
-
 import AppPresenter from "./app.presenter";
 
 const mapStateToProps = ({
@@ -14,13 +12,6 @@ const mapStateToProps = ({
   nextDevDependencies: devDependencies
 });
 
-const mapDispatchToProps = dispatch => ({
-  onClickCheck: packageString => dispatch(requestCheckUpdates(packageString))
-});
-
-const App = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withErrorBoundary(AppPresenter));
+const App = connect(mapStateToProps)(withErrorBoundary(AppPresenter));
 
 export default App;
