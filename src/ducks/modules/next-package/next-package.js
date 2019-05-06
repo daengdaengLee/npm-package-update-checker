@@ -110,11 +110,13 @@ export default function nextPackageReducer(state = initState, action = {}) {
 
 // Reducer Functions
 
-function applyChangePackageObject(
-  state,
-  { packageObject: { dependencies, devDependencies, ...packageObject } },
-) {
-  return { ...state, packageObject };
+function applyChangePackageObject(state, { packageObject }) {
+  const nextPackageObject = Object.assign({}, packageObject);
+
+  delete nextPackageObject.dependencies;
+  delete nextPackageObject.devDependencies;
+
+  return Object.assign({}, state, { packageObject });
 }
 
 function applyChangeDependencies(state, { dependencies }) {
@@ -124,10 +126,7 @@ function applyChangeDependencies(state, { dependencies }) {
     nextDependencies.set(dependency.name, dependency);
   }
 
-  return {
-    ...state,
-    dependencies: nextDependencies,
-  };
+  return Object.assign({}, state, { dependencies: nextDependencies });
 }
 
 function applyChangeDevDependencies(state, { devDependencies }) {
@@ -137,102 +136,78 @@ function applyChangeDevDependencies(state, { devDependencies }) {
     nextDevDependencies.set(devDependency.name, devDependency);
   }
 
-  return {
-    ...state,
-    devDependencies: nextDevDependencies,
-  };
+  return Object.assign({}, state, { devDependencies: nextDevDependencies });
 }
 
 function applyChangeError(state, { error }) {
-  return {
-    ...state,
-    error,
-  };
+  return Object.assign({}, state, { error });
 }
 
 function applyChangeDependenciesError(state, { name, error }) {
   const prevDependency = state.dependencies.get(name);
   if (!prevDependency) return state;
 
-  const nextDependency = { ...prevDependency, error };
+  const nextDependency = Object.assign({}, prevDependency, { error });
   const dependencies = new Map(state.dependencies).set(nextDependency.name, nextDependency);
 
-  return {
-    ...state,
-    dependencies,
-  };
+  return Object.assign({}, state, { dependencies });
 }
 
 function applyChangeDevDependenciesError(state, { name, error }) {
   const prevDevDependency = state.devDependencies.get(name);
   if (!prevDevDependency) return state;
 
-  const nextDevDependency = { ...prevDevDependency, error };
+  const nextDevDependency = Object.assign({}, prevDevDependency, { error });
   const devDependencies = new Map(state.devDependencies).set(
     nextDevDependency.name,
     nextDevDependency,
   );
 
-  return {
-    ...state,
-    devDependencies,
-  };
+  return Object.assign({}, state, { devDependencies });
 }
 
 function applyChangeDependenciesLoading(state, { name, loading }) {
   const prevDependency = state.dependencies.get(name);
   if (!prevDependency) return state;
 
-  const nextDependency = { ...prevDependency, loading };
+  const nextDependency = Object.assign({}, prevDependency, { loading });
   const dependencies = new Map(state.dependencies).set(nextDependency.name, nextDependency);
 
-  return {
-    ...state,
-    dependencies,
-  };
+  return Object.assign({}, state, { dependencies });
 }
 
 function applyChangeDevDependenciesLoading(state, { name, loading }) {
   const prevDevDependency = state.devDependencies.get(name);
   if (!prevDevDependency) return state;
 
-  const nextDevDependency = { ...prevDevDependency, loading };
+  const nextDevDependency = Object.assign({}, prevDevDependency, { loading });
   const devDependencies = new Map(state.devDependencies).set(
     nextDevDependency.name,
     nextDevDependency,
   );
 
-  return {
-    ...state,
-    devDependencies,
-  };
+  return Object.assign({}, state, { devDependencies });
 }
 
 function applyChangeDependenciesNextVersion(state, { name, nextVersion }) {
   const prevDependency = state.dependencies.get(name);
   if (!prevDependency) return state;
 
-  const nextDependency = { ...prevDependency, nextVersion };
+  const nextDependency = Object.assign({}, prevDependency, { nextVersion });
   const dependencies = new Map(state.dependencies).set(nextDependency.name, nextDependency);
 
-  return {
-    ...state,
-    dependencies,
-  };
+  return Object.assign({}, state, { dependencies });
 }
 
 function applyChangeDevDependenciesNextVersion(state, { name, nextVersion }) {
   const prevDevDependency = state.devDependencies.get(name);
   if (!prevDevDependency) return state;
 
-  const nextDevDependency = { ...prevDevDependency, nextVersion };
+  const nextDevDependency = Object.assign({}, prevDevDependency, { nextVersion });
   const devDependencies = new Map(state.devDependencies).set(
     nextDevDependency.name,
     nextDevDependency,
   );
 
-  return {
-    ...state,
-    devDependencies,
-  };
+  return Object.assign({}, state, { devDependencies });
 }

@@ -27,11 +27,13 @@ export function* processRequestCheckUpdates({ packageString }) {
   yield put(changeDevDependencies(new Map()));
 
   try {
-    const {
-      dependencies: dependenciesObject,
-      devDependencies: devDependenciesObject,
-      ...packageObject
-    } = JSON.parse(packageString);
+    const packageObject = JSON.parse(packageString);
+
+    const dependenciesObject = packageObject.dependencies;
+    delete packageObject.dependencies;
+
+    const devDependenciesObject = packageObject.devDependencies;
+    delete packageObject.devDependencies;
 
     yield put(changePackageObject(packageObject));
 
