@@ -1,10 +1,56 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
-    <title></title>
+    <meta charset="utf-8" />
+    <title>npm package update checker</title>
+    <style>
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+
+        padding: 0;
+        margin: 0;
+      }
+
+      #prev-package {
+        width: 100%;
+        height: 24rem;
+
+        display: flex;
+        flex-direction: column;
+      }
+      #prev-package textarea {
+        width: 100%;
+        height: 0;
+        flex-grow: 1;
+
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+
+        resize: none;
+      }
+    </style>
   </head>
   <body>
-    Well hey there!!!
+    <h1>NPM package update checker</h1>
+
+    <div id="prev-package">
+      <h2>prev package.json</h2>
+      <div>
+        <button type="button" id="update-check-button">check</button>
+      </div>
+      <textarea></textarea>
+    </div>
+
+    <div id="next-package">
+      <h2>next package.json</h2>
+      <ul id="dependencies"></ul>
+      <div>
+        <button type="button">make</button>
+      </div>
+    </div>
   </body>
+  <script src="./renderer.js"></script>
 </html>

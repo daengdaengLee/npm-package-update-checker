@@ -3,7 +3,7 @@ import { remote } from 'electron';
 const https = remote.require('https');
 
 export const getNpmPackageLatestVersion = name =>
-  new Promise((resolve, reject) => {
+  new Promise((resolve) => {
     let body = '';
 
     https
@@ -16,13 +16,13 @@ export const getNpmPackageLatestVersion = name =>
           try {
             const json = JSON.parse(body);
             const latestVersion = json['dist-tags'].latest;
-            resolve(latestVersion);
+            resolve({ success: true, version: latestVersion });
           } catch (error) {
-            reject(error);
+            resolve({ success: false, version: '', error });
           }
         });
       })
-      .on('error', () => reject('Faile to read package version'));
+      .on('error', error => resolve({ success: false, version: '', error }));
   });
 
 export default getNpmPackageLatestVersion;
