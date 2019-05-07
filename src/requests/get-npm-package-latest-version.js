@@ -16,7 +16,7 @@ export const getNpmPackageLatestVersion = name =>
           try {
             const json = JSON.parse(body);
             const latestVersion = json['dist-tags'].latest;
-            resolve({ success: true, version: latestVersion });
+            resolve({ success: true, version: `^${latestVersion}` });
           } catch (error) {
             resolve({ success: false, version: '', error });
           }

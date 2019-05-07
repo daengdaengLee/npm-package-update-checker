@@ -31,6 +31,23 @@
 
         resize: none;
       }
+
+      [data-package-name] {
+        display: flex;
+      }
+      [data-package-name] > label {
+        width: 0;
+        flex-grow: 1;
+      }
+      [data-package-name] > input[type="text"] {
+        width: 0;
+        flex-grow: 1;
+      }
+    </style>
+    <style>
+      .hide {
+        display: none;
+      }
     </style>
   </head>
   <body>
@@ -46,7 +63,17 @@
 
     <div id="next-package">
       <h2>next package.json</h2>
-      <ul id="dependencies"></ul>
+
+      <h3>dependencies</h3>
+      <ul id="dependencies">
+        <li>no dependencies</li>
+      </ul>
+
+      <h3>devDependencies</h3>
+      <ul id="dev-dependencies">
+        <li>no devDependencies</li>
+      </ul>
+
       <div>
         <button type="button">make</button>
       </div>

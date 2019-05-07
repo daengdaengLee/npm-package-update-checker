@@ -2,7 +2,6 @@
 import { all, put, select, call, takeLatest } from 'redux-saga/effects';
 
 import { makeDependency } from '../../../entities';
-import { getNpmPackageVersion } from '../../../requests';
 
 import {
   REQUEST_CHECK_UPDATES,
@@ -17,6 +16,7 @@ import {
   changeDependenciesNextVersion,
   changeDevDependenciesNextVersion,
 } from '../../modules/next-package/next-package';
+import { getNpmPackageLatestVersion } from '../../../requests';
 
 // workers
 
@@ -52,13 +52,12 @@ export function* processRequestCheckUpdates({ packageString }) {
     yield put(changeDevDependencies(devDependencies));
   } catch (error) {
     yield put(changeError(error));
-    return;
   }
 
   const { dependencies, devDependencies } = yield select(state => state.nextPackage);
 
   for (const [name] of dependencies) {
-    const { success, version: nextVersion } = yield call(getNpmPackageVersion, name);
+    const { success, version: nextVersion } = yield call(getNpmPackageLatestVersion, name);
 
     yield success
       ? put(changeDependenciesNextVersion(name, nextVersion))
@@ -67,7 +66,7 @@ export function* processRequestCheckUpdates({ packageString }) {
   }
 
   for (const [name] of devDependencies) {
-    const { success, version: nextVersion } = yield call(getNpmPackageVersion, name);
+    const { success, version: nextVersion } = yield call(getNpmPackageLatestVersion, name);
 
     yield success
       ? put(changeDevDependenciesNextVersion(name, nextVersion))
