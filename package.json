@@ -13,6 +13,10 @@
     "checker",
     "package.json"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/daengdaengLee/npm-package-update-checker.git"
+  },
   "author": "daengdaenglee",
   "license": "MIT",
   "devDependencies": {
