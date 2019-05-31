@@ -1,5 +1,5 @@
 {
-  "name": "npm-package-update-checker",
+  "name": "@daengdaenglee/npm-package-update-checker",
   "version": "1.0.0",
   "description": "Check updates of dependencies in package.json",
   "main": "index.js",
@@ -13,6 +13,10 @@
     "checker",
     "package.json"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/daengdaengLee/npm-package-update-checker.git"
+  },
   "author": "daengdaenglee",
   "license": "MIT",
   "devDependencies": {
