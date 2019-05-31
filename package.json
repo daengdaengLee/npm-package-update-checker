@@ -1,0 +1,15 @@
+{
+  "name": "npm-package-update-checker",
+  "version": "1.0.0",
+  "description": "Check updates of dependencies in package.json",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "checker",
+    "package.json"
+  ],
+  "author": "daengdaenglee",
+  "license": "MIT"
+}
