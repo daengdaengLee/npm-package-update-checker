@@ -1,6 +1,6 @@
 {
   "name": "@daengdaenglee/npm-package-update-checker",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Check updates of dependencies in package.json",
   "main": "index.js",
   "scripts": {
@@ -20,12 +20,12 @@
   "author": "daengdaenglee",
   "license": "MIT",
   "devDependencies": {
-    "eslint": "^5.3.0",
-    "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-config-prettier": "^4.3.0",
-    "eslint-plugin-import": "^2.17.3",
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-config-prettier": "^6.1.0",
+    "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-prettier": "^3.1.0",
-    "prettier": "1.17.1"
+    "prettier": "1.18.2"
   },
   "eslintConfig": {
     "extends": [
